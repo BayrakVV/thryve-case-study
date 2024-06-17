@@ -45,7 +45,10 @@ public class MainDataFlowTest {
         // Upload data to Thryve warehouse
         thryveApiController.uploadEpochDataFromWebApp(accessToken, jsonBody);
 
-        // Check for a new data point within 10 seconds, otherwise interrupt the test
+        // THEN
+        // Check within 10 seconds for a new data point
+        // in the Health Data API response for the specified time period,
+        // otherwise interrupt the test
         Response thryveData;
         List<?> thryveDataPoints;
         long newDataPointRequestTimeout = System.currentTimeMillis() + 10000;
@@ -75,7 +78,6 @@ public class MainDataFlowTest {
         String webhookStartDate = webhookData.path("sourceUpdate.'/v5/dynamicEpochValues'.startTimestamp");
         String webhookEndDate = webhookData.path("sourceUpdate.'/v5/dynamicEpochValues'.endTimestamp");
 
-        // THEN
         // Make assertions
         assertThat(thryveMeasurementValue).isEqualTo(uploadMeasurementValue);
         assertThat(thryveValueType).isEqualTo(webhookValueType);
